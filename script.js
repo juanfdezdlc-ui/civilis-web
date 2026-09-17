@@ -24,6 +24,25 @@
     });
   }
 
+  const navLinks = document.querySelector('.nav-links');
+  if (navLinks && !navLinks.querySelector('[data-about-link]')) {
+    const isEnglish = document.documentElement.lang.toLowerCase().startsWith('en') || window.location.pathname.startsWith('/en/');
+    const aboutLink = document.createElement('a');
+    aboutLink.dataset.aboutLink = '';
+    aboutLink.href = isEnglish ? '/en/about.html' : '/es/quienes-somos.html';
+    aboutLink.textContent = isEnglish ? 'About us' : 'Quiénes somos';
+
+    const aboutPath = isEnglish ? '/en/about.html' : '/es/quienes-somos.html';
+    if (window.location.pathname === aboutPath) {
+      aboutLink.setAttribute('aria-current', 'page');
+    }
+
+    const insightsLink = Array.from(navLinks.querySelectorAll('a')).find((link) =>
+      link.getAttribute('href')?.includes('insights')
+    );
+    navLinks.insertBefore(aboutLink, insightsLink || null);
+  }
+
   const yearNode = document.querySelector('[data-current-year]');
   if (yearNode) yearNode.textContent = String(new Date().getFullYear());
 
